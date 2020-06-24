@@ -1,0 +1,72 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Effect size for mixed models</title>
+
+  </head>
+
+  <body>
+    <script>
+      function effectSize() {
+        let meanDiff = parseFloat(document.getElementById("mean_diff").value);
+        let residualVariance = parseFloat(document.getElementById("res_var").value);
+        let clusterVariance = parseFloat(document.getElementById("cluster_var").value);
+        let sizeOne = parseFloat(document.getElementById("size_1").value);
+        let sizeTwo = parseFloat(document.getElementById("size_2").value);
+
+        let effectSize = meanDiff/(Math.sqrt(residualVariance + clusterVariance));
+        document.getElementById("effect_size").textContent = "" + effectSize;
+
+        let sigma = Math.sqrt((sizeOne + sizeTwo)/(sizeOne * sizeTwo) + (effectSize * effectSize)/(2.0 * (sizeOne + sizeTwo)));
+        document.getElementById("conf_interval_1").textContent = "" + (effectSize - 1.96 * sigma);
+        document.getElementById("conf_interval_2").textContent = "" + (effectSize + 1.96 * sigma);
+      }
+    </script>
+    <div>
+      <h3>Parameters:</h3>
+      <ul>
+        <li>
+          <label for="mean_diff">Adjusted mean difference:</label>
+          <input type="text" id="mean_diff" name="mean_diff">
+        </li>
+        <li>
+          <label for="res_var">Residual variance:</label>
+          <input type="text" id="res_var" name="res_var">
+        </li>
+        <li>
+          <label for="cluster_var">Cluster variance:</label>
+          <input type="text" id="cluster_var" name="cluster_var">
+        </li>
+        <li>
+          <label for="size_1">Group Size 1:</label>
+          <input type="text" id="size_1" name="size_1">
+        </li>
+        <li>
+          <label for="size_2">Group Size 2:</label>
+          <input type="text" id="size_2" name="size_2">
+        </li>
+      </ul>
+      <button onclick="effectSize()">Calculate effect size</button>
+    </div>
+    <div>
+      <h3>Results:</h3>
+      <ul>
+        <li>
+          <labe >Effect Size:</label>
+          <label id="effect_size"></label>
+        </li>
+        <li>
+          <label>Confidence Interval 1 (95%):</label>
+          <label id="conf_interval_1"></label>
+        </li>
+        <li>
+          <label>Confidence Interval 2 (95%):</label>
+          <label id="conf_interval_2"></label>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
